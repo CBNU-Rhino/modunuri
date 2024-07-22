@@ -1,8 +1,17 @@
 package app.app.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // 기본 생성자
+@AllArgsConstructor // 모든 필드를 포함하는 생성자
+@Getter // Getter 메소드 생성
+@Setter // Setter 메소드 생성
 @Table(name = "restaurants")
 public class Restaurant {
     @Id
@@ -16,17 +25,4 @@ public class Restaurant {
     @ManyToOne
     @JoinColumn(name = "tourist_spot_id")
     private TouristSpot touristSpot; // 외래 키
-
-    public Restaurant() {
-    }
-
-    public Restaurant(Long id, String name, String description, String location, TouristSpot touristSpot) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.location = location;
-        this.touristSpot = touristSpot;
-    }
-
-    // Getter와 Setter 생략
 }
