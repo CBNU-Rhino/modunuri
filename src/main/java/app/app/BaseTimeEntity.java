@@ -1,22 +1,22 @@
-package app.app.domain;
-import jakarta.persistence.EntityListeners;
+package app.app;
+
 import jakarta.persistence.MappedSuperclass;
-import lombok.Getter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import java.time.LocalDateTime;
+import jakarta.persistence.Column;
 
-@Getter
 @MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
-public abstract class BaseTimeEntity { //게시물 생성 시간 OR 수정 시간 저장 자동화를 위한 BaseTimeEntity 클래스
+public abstract class BaseTimeEntity {
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
-    @CreatedDate
-    private LocalDateTime createdDate;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
-    @LastModifiedDate
-    private LocalDateTime modifiedDate;
+    // 기본 생성자
+    public BaseTimeEntity() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
 
+    // 게터 및 세터 생략
 }

@@ -1,8 +1,7 @@
-package app.app.service;
+package app.app.post.Service;
 
-import app.app.domain.Post;
-import app.app.domain.Post;
-import app.app.domain.post.PostRepository;
+import app.app.post.Post;
+import app.app.post.Repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

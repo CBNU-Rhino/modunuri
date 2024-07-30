@@ -1,6 +1,6 @@
-package app.app.domain.touristSpot;
+package app.app.touristSpot.Repository;
 
-import app.app.domain.TouristSpot;
+import app.app.touristSpot.TouristSpot;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TouristSpotRepository extends JpaRepository<TouristSpot, Long> {

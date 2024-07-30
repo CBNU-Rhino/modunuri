@@ -1,18 +1,17 @@
-package app.app.domain;
+package app.app.user;
 
+import app.app.BaseTimeEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Entity(name= "user")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity(name = "user")
+@NoArgsConstructor(access = AccessLevel.PUBLIC) //기본생성자를 생성해줌
 @Getter
-public class User extends BaseTimeEntity{
+@Setter
+public class User extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id") //@Colum == 내부변수 정의
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "username")
@@ -21,24 +20,38 @@ public class User extends BaseTimeEntity{
     @Column(name = "password")
     private String password;
 
-    @Column(name ="Email")
+    @Column(name = "email")
     private String email;
 
-    @Column(name ="profile_image_url") //프로필 이미지
+    @Column(name = "profile_image_url")
     private String profile_image_url;
 
-    @Builder //
-    public User(String username, String password, String email, String profile_image_url) {
+    @Column(name = "phonenumber")
+    private String Phone_Number;
+
+    @Builder
+    public User(String username, String password, String email, String Phone_Number, String profile_image_url) {
         this.username = username;
         this.password = password;
-        this.email=email;
+        this.email = email;
         this.profile_image_url = profile_image_url;
+        this.Phone_Number = Phone_Number;
     }
 
-    //편의 메서드
-    public void update(String username, String password, String email) {
-        this.username=username;
+
+    // 편의 메서드
+    public void update(String username, String password, String email, String Phone_Number) {
+        this.username = username;
         this.password = password;
         this.email = email;
+        this.Phone_Number = Phone_Number;
+    }
+
+    public void setName(String name) {
+        this.username = name;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.Phone_Number = phoneNumber;
     }
 }

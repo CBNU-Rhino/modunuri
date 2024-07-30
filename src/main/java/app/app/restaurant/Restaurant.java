@@ -1,5 +1,6 @@
-package app.app.domain;
+package app.app.restaurant;
 
+import app.app.touristSpot.TouristSpot;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -16,11 +17,12 @@ import lombok.Setter;
 public class Restaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String name;
-    private String description;
-    private String location;
+    private Long id; //id
+    private String name; //이름
+    private String description; //설명
+    private String location; //위치
+    private String phoneNumber; // 식당 번호
+    private String imageUrl;
 
     @ManyToOne
     @JoinColumn(name = "tourist_spot_id")

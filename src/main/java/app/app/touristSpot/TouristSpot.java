@@ -1,4 +1,4 @@
-package app.app.domain;
+package app.app.touristSpot;
 
 import jakarta.persistence.*;
 

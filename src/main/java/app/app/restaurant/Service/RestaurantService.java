@@ -1,7 +1,7 @@
-package app.app.service;
+package app.app.restaurant.Service;
 
-import app.app.domain.Restaurant;
-import app.app.domain.restaurant.RestaurantRepository;
+import app.app.restaurant.Restaurant;
+import app.app.restaurant.Repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
