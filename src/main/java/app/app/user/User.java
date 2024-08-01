@@ -54,4 +54,12 @@ public class User extends BaseTimeEntity {
     public void setPhoneNumber(String phoneNumber) {
         this.Phone_Number = phoneNumber;
     }
+
+    public String getName() {
+        return username;
+    }
+
+    public String getPhoneNumber() {
+        return Phone_Number;
+    }
 }
