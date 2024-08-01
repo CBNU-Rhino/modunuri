@@ -49,4 +49,16 @@ public class userController {
     public String loginFailure() {
         return "로그인 실패: 잘못된 자격 증명.";
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        // 사용자 로그인 서비스 호출
+        String token = userService.login(loginRequest.getEmail(), loginRequest.getPassword());
+
+        if (token != null) {
+            return ResponseEntity.ok(new LoginResponse(token)); // 로그인 성공 시 토큰 반환
+        } else {
+            return ResponseEntity.status(401).body("잘못된 자격 증명입니다."); // 로그인 실패 시
+        }
+    }
 }

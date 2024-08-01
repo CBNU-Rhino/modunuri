@@ -4,8 +4,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.Customizer;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -26,5 +32,20 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults()); // 기본 HTTP 인증
 
         return http.build();
+    }
+    @Bean
+    public ClientRegistrationRepository clientRegistrationRepository() {
+        ClientRegistration registration = ClientRegistration.withRegistrationId("my-client")
+                .clientId("your-client-id")
+                .clientSecret("your-client-secret")
+                .scope("read", "write")
+                .authorizationUri("https://example.com/oauth2/authorize")
+                .tokenUri("https://example.com/oauth2/token")
+                .userInfoUri("https://example.com/userinfo")
+                .redirectUri("{baseUrl}/login/oauth2/code/{registrationId}")
+                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .build();
+
+        return new InMemoryClientRegistrationRepository(Arrays.asList(registration));
     }
 }
