@@ -1,64 +1,47 @@
 package app.app.user.Controller;
 
 import app.app.user.DTO.UserDTO;
+import app.app.user.Repository.UserRepository;
+import app.app.user.entity.User;
 import app.app.user.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/users") // API 엔드포인트 경로 설정
+@RequestMapping("/api/users")
 public class userController {
 
     @Autowired
-    private UserService userService; // 사용자 서비스
+    private UserService userService;
 
-    // 사용자 등록 API
+
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody UserDTO userDto) {
+    public ResponseEntity<?> register(@RequestBody UserDTO userDTO) {
         try {
-            userService.registerUser(userDto);
-            return new ResponseEntity<>("사용자 등록 성공", HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>("사용자 등록 실패: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            // UserDTO를 사용하여 사용자 등록
+            User newUser = userService.registerUser(
+                    userDTO.getUsername(),
+                    userDTO.getPassword(),
+                    userDTO.getEmail(),
+                    userDTO.getPhoneNumber()
+            );
+            return ResponseEntity.ok(newUser); // 성공적으로 등록된 사용자 반환
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage()); // 오류 메시지 반환
         }
-    }
-
-    @GetMapping("/user")
-    public String getUser(@AuthenticationPrincipal OAuth2User principal) {
-        if (principal != null) {
-            String name = principal.getAttribute("name");
-            String email = principal.getAttribute("email");
-            return "사용자 이름: " + name + ", 이메일: " + email;
-        }
-        return "사용자 정보가 없습니다.";
-    }
-
-    @GetMapping("/loginSuccess")
-    public String loginSuccess(@AuthenticationPrincipal OAuth2User principal) {
-        if (principal != null) {
-            return "로그인 성공: " + principal.getAttribute("name");
-        }
-        return "로그인 실패";
-    }
-
-    @GetMapping("/loginFailure")
-    public String loginFailure() {
-        return "로그인 실패: 잘못된 자격 증명.";
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        // 사용자 로그인 서비스 호출
-        String token = userService.login(loginRequest.getEmail(), loginRequest.getPassword());
-
-        if (token != null) {
-            return ResponseEntity.ok(new LoginResponse(token)); // 로그인 성공 시 토큰 반환
+    public ResponseEntity<?> login(@RequestBody UserDTO userDTO) {
+        User user = userService.login(userDTO.getUsername(), userDTO.getPassword());
+        if (user != null) {
+            return ResponseEntity.ok(user); // 로그인 성공 시 사용자 정보 반환
         } else {
-            return ResponseEntity.status(401).body("잘못된 자격 증명입니다."); // 로그인 실패 시
+            return ResponseEntity.status(401).body("이메일 또는 비밀번호가 잘못되었습니다."); // 로그인 실패 시 오류 메시지 반환
         }
     }
+
+
 }
