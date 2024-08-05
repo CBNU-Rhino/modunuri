@@ -27,12 +27,19 @@ public class UserService {
         return userRepository.save(newUser); // 사용자 저장
     }
 
-    public User login(String email, String password) { //로그인 구현
+    public User login(String email, String password) {
         User user = userRepository.findByEmail(email);
-        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+        if (user == null) {
+            System.out.println("사용자를 찾을 수 없습니다: " + email);
+            return null; // 인증 실패
+        }
+
+        if (passwordEncoder.matches(password, user.getPassword())) {
             return user; // 인증 성공
         } else {
+            System.out.println("비밀번호 불일치: " + email);
             return null; // 인증 실패
         }
     }
+
 }

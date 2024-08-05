@@ -35,7 +35,7 @@ public class userController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserDTO userDTO) {
-        User user = userService.login(userDTO.getUsername(), userDTO.getPassword());
+        User user = userService.login(userDTO.getEmail(), userDTO.getPassword());
         if (user != null) {
             return ResponseEntity.ok(user); // 로그인 성공 시 사용자 정보 반환
         } else {
